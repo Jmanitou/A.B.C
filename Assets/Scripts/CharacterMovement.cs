@@ -5,20 +5,27 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 2.0f;
+    private float horizontalSpeed = 2.0f;
+    [SerializeField]
+    private float jumpVelocity = 10.0f;
 
-    public Animator movementAnimator;
+    private Rigidbody2D rigidbody2D;
+
+    void Awake()
+    {
+        rigidbody2D = GetComponent<Rigidbody2D>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
         MoveHorizontally();
+        Jump();
     }
 
     // Control character's horizontal movement
@@ -26,19 +33,26 @@ public class CharacterMovement : MonoBehaviour
     {
         float horizontalVal = Input.GetAxis("Horizontal");
 
-        // Animation control
-        movementAnimator.SetFloat("Horizontal", horizontalVal);
+        // Flip the character sprite when facing left
+        if (horizontalVal < 0) FlipCharacter(true);
+        else FlipCharacter(false);
 
-        // 
-
-        // Move character position
+        // Character moves horizontally
         Vector3 horizontal = new Vector3(horizontalVal, 0.0f, 0.0f);
-        transform.position += horizontal * speed * Time.deltaTime;
+        transform.position += horizontal * horizontalSpeed * Time.deltaTime;
     }
 
-    // Flip the character when facing/walking left
-    void FlipCharacter(bool ifFlipped)
+    // Control if character needs to jump
+    void Jump()
     {
-        GetComponent<SpriteRenderer>().flipX = ifFlipped ? true : false;
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            rigidbody2D.velocity = Vector2.up * jumpVelocity;
+        }
     }
+
+    #region Helper Methods
+    // Flip the character when facing/walking left
+    void FlipCharacter(bool ifFlipped) { GetComponent<SpriteRenderer>().flipX = ifFlipped ? true : false; }
+    #endregion
 }
