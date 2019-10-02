@@ -7,6 +7,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField]
     private float speed = 2.0f;
 
+    public Animator movementAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +24,21 @@ public class CharacterMovement : MonoBehaviour
     // Control character's horizontal movement
     void MoveHorizontally()
     {
-        Vector3 horizontal = new Vector3(Input.GetAxis("Horizontal"), 0.0f, 0.0f);
+        float horizontalVal = Input.GetAxis("Horizontal");
+
+        // Animation control
+        movementAnimator.SetFloat("Horizontal", horizontalVal);
+
+        // 
+
+        // Move character position
+        Vector3 horizontal = new Vector3(horizontalVal, 0.0f, 0.0f);
         transform.position += horizontal * speed * Time.deltaTime;
+    }
+
+    // Flip the character when facing/walking left
+    void FlipCharacter(bool ifFlipped)
+    {
+        GetComponent<SpriteRenderer>().flipX = ifFlipped ? true : false;
     }
 }
