@@ -7,6 +7,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float horizontalSpeed = 2.0f;
     [SerializeField] private float jumpVelocity = 10.0f;
 
+    public Transform rotatingPoint;
+
     // Collision Variables
     [SerializeField] private LayerMask groundLayerMask;
 
@@ -29,6 +31,12 @@ public class CharacterMovement : MonoBehaviour
     {
         MoveHorizontally();
         Jump();
+
+        if (boxCollider2D.OverlapPoint(rotatingPoint.transform.position))
+        {
+            transform.Rotate(new Vector3(0, 90, 0), Space.World);
+            rigidbody2D.isKinematic = true;
+        }
     }
 
     // Control character's horizontal movement
@@ -61,7 +69,7 @@ public class CharacterMovement : MonoBehaviour
     // Check if the character has hit the ground
     bool isGrounded()
     {
-        RaycastHit2D raycastHit2D = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 1f, groundLayerMask);
+        RaycastHit2D raycastHit2D = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 0.01f, groundLayerMask);
         return raycastHit2D.collider != null;
     }
     #endregion
