@@ -7,8 +7,6 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float horizontalSpeed = 2.0f;
     [SerializeField] private float jumpVelocity = 10.0f;
 
-    public Transform rotatingPoint;
-
     // Collision Variables
     [SerializeField] private LayerMask groundLayerMask;
 
@@ -31,12 +29,6 @@ public class CharacterMovement : MonoBehaviour
     {
         MoveHorizontally();
         Jump();
-
-        if (boxCollider2D.OverlapPoint(rotatingPoint.transform.position))
-        {
-            transform.Rotate(new Vector3(0, 90, 0), Space.World);
-            rigidbody2D.isKinematic = true;
-        }
     }
 
     // Control character's horizontal movement
