@@ -10,7 +10,7 @@ public class CharacterMovement : MonoBehaviour
     // Collision Variables
     [SerializeField] private LayerMask groundLayerMask = 0;
 
-    private Rigidbody2D rigidbody2D;
+    private new Rigidbody2D rigidbody2D;
     private BoxCollider2D boxCollider2D;
 
     void Awake()
