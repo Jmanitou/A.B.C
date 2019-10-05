@@ -37,8 +37,8 @@ public class CharacterMovement : MonoBehaviour
         float horizontalVal = Input.GetAxis("Horizontal");
 
         // Flip the character sprite when facing left
-        if (horizontalVal < 0) FlipCharacter(true);
-        else if (horizontalVal > 0) FlipCharacter(false);
+        if (horizontalVal < 0) FlipCharacter(false);
+        else if (horizontalVal > 0) FlipCharacter(true);
 
         // Character moves horizontally
         Vector3 horizontal = new Vector3(horizontalVal, 0.0f, 0.0f);
