@@ -6,14 +6,35 @@ public class DarkMode : MonoBehaviour
 {
     public Material darkMat;
 
-    [SerializeField] private GameObject[] gameObjects;
+    [SerializeField] private List<GameObject> darkenObjects = null;
+
+    void Awake()
+    {
+        darkenObjects = new List<GameObject>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < gameObjects.Length; ++i)
+        GameObject.Find("Directional Light").GetComponent<Light>().enabled = false;
+
+        // Fill the list of game objects need to be darkened
+        GameObject[] goalItems = GameObject.FindGameObjectsWithTag("GoalItem");
+        foreach (GameObject goalItem in goalItems)
         {
-            gameObjects[i].GetComponent<Renderer>().material = darkMat;
+            darkenObjects.Add(goalItem.transform.GetChild(0).gameObject);
+            darkenObjects.Add(goalItem.transform.GetChild(1).gameObject);
+        }
+
+        GameObject[] otherItems = GameObject.FindGameObjectsWithTag("Dark");
+        foreach (GameObject otherItem in otherItems)
+        {
+            darkenObjects.Add(otherItem.gameObject);
+        }
+
+        for (int i = 0; i < darkenObjects.Count; ++i)
+        {
+            darkenObjects[i].GetComponent<Renderer>().material = darkMat;
         }
     }
 
