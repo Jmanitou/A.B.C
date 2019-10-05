@@ -54,6 +54,8 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    
+
     #region Helper Methods
     // Flip the character when facing/walking left
     void FlipCharacter(bool ifFlipped) { GetComponent<SpriteRenderer>().flipX = ifFlipped ? true : false; }
