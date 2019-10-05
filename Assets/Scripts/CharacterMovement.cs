@@ -8,7 +8,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float jumpVelocity = 10.0f;
 
     // Collision Variables
-    [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private LayerMask groundLayerMask = 0;
 
     private Rigidbody2D rigidbody2D;
     private BoxCollider2D boxCollider2D;
