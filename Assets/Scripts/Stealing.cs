@@ -30,6 +30,9 @@ public class Stealing : MonoBehaviour
             goalItems.Add(temp);
         }
 
+        // Slider starts with inactive
+        playerStealSlider.gameObject.SetActive(false);
+        
         // Set slider
         playerStealSlider.maxValue = timeToSteal;
         playerStealSlider.value = stealTimer;
@@ -38,17 +41,51 @@ public class Stealing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.U))
-        {
-            stealTimer += Time.deltaTime; // Time accumulating
-            playerStealSlider.value = stealTimer;
+        // Find the closest goal item to the player
+        int closestIndex = FindClosestGoalItem();
 
-            if (stealTimer >= timeToSteal)
+        // If the player is within range of the closest object
+        if (isWithinValidRange(closestIndex))
+        {
+            Debug.Log("Current closest goal item index: " + closestIndex);
+
+            if (Input.GetKey(KeyCode.U) && goalItems.Count > 0)
             {
-                Steal(FindClosestGoalItem());
-                stealTimer = 0f;
+                // Show the slider to the player to indicate stealing progress
+                playerStealSlider.gameObject.SetActive(true);
+
+                stealTimer += Time.deltaTime;           // Time accumulating
+                playerStealSlider.value = stealTimer;   // Update the slider value
+
+                // When the stealing progress reaches 100%
+                if (stealTimer >= timeToSteal)
+                {
+                    Steal(FindClosestGoalItem());                   // Steal the item
+                    stealTimer = 0f;                                // Reset the timer
+                    playerStealSlider.gameObject.SetActive(false);  // Hide the slider
+
+                    // Remove the item from the list since it has been stolen
+                    goalItems.RemoveAt(closestIndex);
+                }
             }
         }
+
+        // If the player is not within the range of any objects
+        else
+        {
+            playerStealSlider.gameObject.SetActive(false);  // Hide the slider
+            playerStealSlider.value = 0;
+        }
+    }
+
+    // Check if the player is within a valid range to steal the item
+    bool isWithinValidRange(int index)
+    {
+        if (Vector2.Distance(playerTransform.position, goalItems[index].transform.position) <= range)
+        {
+            return true;
+        }
+        return false;
     }
 
     // Steal a goal item given the index in the goalItems array
@@ -59,9 +96,6 @@ public class Stealing : MonoBehaviour
         {
             // Disable the child (museum collection) of a goal item
             goalItems[index].transform.GetChild(0).gameObject.SetActive(false);
-
-            // Remove the item from the list since it has been stolen
-            goalItems.RemoveAt(index);
         }
     }
 

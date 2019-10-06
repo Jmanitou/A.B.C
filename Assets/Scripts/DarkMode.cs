@@ -5,6 +5,7 @@ using UnityEngine;
 public class DarkMode : MonoBehaviour
 {
     public Material darkMat;
+    public Material shinyMat;   // Material for museum object
 
     [SerializeField] private List<GameObject> darkenObjects = null;
 

@@ -21,7 +21,7 @@ public class GuardMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            Debug.Log("Colliding with player");
+            Debug.Log("Guard collides with player");
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
     }

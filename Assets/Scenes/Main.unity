@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   darkMat: {fileID: 2100000, guid: dd9c8767511379e469c555a440553de6, type: 2}
+  shinyMat: {fileID: 0}
   darkenObjects:
   - {fileID: 420742161}
   - {fileID: 1899053996}
