@@ -16,7 +16,7 @@ public class Stealing : MonoBehaviour
     [Range(0f, 3f)]
     private float range = 0;   // Range for the player to interact (steal) with the museum collection
 
-    private void Awake()
+    void Awake()
     {
         goalItems = new List<GameObject>();
     }
@@ -41,6 +41,7 @@ public class Stealing : MonoBehaviour
         if (Input.GetKey(KeyCode.U))
         {
             stealTimer += Time.deltaTime; // Time accumulating
+            playerStealSlider.value = stealTimer;
 
             if (stealTimer >= timeToSteal)
             {
