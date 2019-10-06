@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goalItems: []
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 1678060938}
   range: 0
 --- !u!114 &138210834
 MonoBehaviour:
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 299885749}
   m_Layer: 0
   m_Name: Painting
-  m_TagString: Untagged
+  m_TagString: Dark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 420742163}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Dark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3168,7 +3168,7 @@ GameObject:
   - component: {fileID: 788989110}
   m_Layer: 0
   m_Name: Statue
-  m_TagString: Untagged
+  m_TagString: Dark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
