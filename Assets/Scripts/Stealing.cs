@@ -105,6 +105,7 @@ public class Stealing : MonoBehaviour
         // If the player is within range
         if (Vector2.Distance(playerTransform.position, goalItems[index].transform.position) <= range)
         {
+            GameStats.NumOfItems++;
             // Disable the child (museum collection) of a goal item
             goalItems[index].transform.GetChild(0).gameObject.SetActive(false);
         }

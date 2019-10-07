@@ -2,8 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct PlayerStats
+public class GameStats : MonoBehaviour
 {
-    int numOfItems;
-    float timeLimit;
+    public static int NumOfItems;
+    [SerializeField]
+    private int startNumOfItems = 0;
+
+    public static float TimeLimit;
+    [SerializeField]
+    private float timeLimit = 60.0f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        NumOfItems = startNumOfItems;
+        TimeLimit = timeLimit;
+    }
+
+
 }
