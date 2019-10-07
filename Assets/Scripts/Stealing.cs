@@ -71,6 +71,12 @@ public class Stealing : MonoBehaviour
                         goalItems.RemoveAt(closestIndex);
                     }
                 }
+
+                else
+                {
+                    // If not holding stealing key, hide the slider
+                    playerStealSlider.gameObject.SetActive(false);
+                }
             }
 
             // If the player is not within the range of any objects
