@@ -222,6 +222,9 @@ MonoBehaviour:
   darkMat: {fileID: 2100000, guid: dd9c8767511379e469c555a440553de6, type: 2}
   shinyMat: {fileID: 2100000, guid: dc1ad340b7f85a542b73e4ff44310053, type: 2}
   playerPointLight: {fileID: 0}
+  goalItemLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
   darkenObjects:
   - {fileID: 420742161}
   - {fileID: 1899053996}
@@ -241,6 +244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startNumOfItems: 0
   timeLimit: 0
+  playerTransform: {fileID: 1678060938}
 --- !u!114 &138210836
 MonoBehaviour:
   m_ObjectHideFlags: 0
