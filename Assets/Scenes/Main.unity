@@ -167,6 +167,8 @@ GameObject:
   - component: {fileID: 138210832}
   - component: {fileID: 138210834}
   - component: {fileID: 138210833}
+  - component: {fileID: 138210835}
+  - component: {fileID: 138210836}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -225,6 +227,33 @@ MonoBehaviour:
   - {fileID: 1899053996}
   - {fileID: 788989108}
   - {fileID: 299885747}
+--- !u!114 &138210835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138210831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d01970f19bbec49acf7e6e04692ce4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startNumOfItems: 0
+  timeLimit: 0
+--- !u!114 &138210836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138210831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28f8f6e90f084774abc64a7367708fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goalItemsCollected: {fileID: 1460051950}
 --- !u!1 &299885747
 GameObject:
   m_ObjectHideFlags: 0
@@ -7283,7 +7312,7 @@ GameObject:
   - component: {fileID: 1460051951}
   - component: {fileID: 1460051950}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Goal Items Collected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
