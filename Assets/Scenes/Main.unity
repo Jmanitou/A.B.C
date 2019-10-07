@@ -202,7 +202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f0dd5830b983643a49d8b12797bdd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalItems: []
   playerTransform: {fileID: 1678060938}
   timeToSteal: 3
   stealTimer: 0
@@ -221,7 +220,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   darkMat: {fileID: 2100000, guid: dd9c8767511379e469c555a440553de6, type: 2}
-  shinyMat: {fileID: 0}
+  shinyMat: {fileID: 2100000, guid: dc1ad340b7f85a542b73e4ff44310053, type: 2}
+  playerPointLight: {fileID: 0}
   darkenObjects:
   - {fileID: 420742161}
   - {fileID: 1899053996}

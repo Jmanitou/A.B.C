@@ -12,6 +12,17 @@ public class GameStats : MonoBehaviour
     [SerializeField]
     private float timeLimit = 60.0f;
 
+    public static List<GameObject> goalItems;
+    public static int closestItemIndex = 0;     // The closest goal item to the player
+
+    public Transform playerTransform;
+
+    void Awake()
+    {
+        goalItems = new List<GameObject>();
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,5 +30,34 @@ public class GameStats : MonoBehaviour
         TimeLimit = timeLimit;
     }
 
+    void Update()
+    {
+        // Find the closest goal item to the player each frame
+        closestItemIndex = FindClosestGoalItem();
+    }
+
+    private int FindClosestGoalItem()
+    {
+        // Get only x and y values of player's position
+        Vector2 playerPosition = playerTransform.position;
+        int closestIndex = 0;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < goalItems.Count; ++i)
+        {
+            GameObject go = goalItems[i];
+
+            // Calculate the distance between the player and the current museum collection
+            float distance = Vector2.Distance(playerPosition, go.transform.position);
+
+            if (distance < closestDistance)
+            {
+                closestIndex = i;           // Update the closest index
+                closestDistance = distance; // Update the closest distance
+            }
+        }
+
+        return closestIndex;
+    }
 
 }
