@@ -41,40 +41,45 @@ public class Stealing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Find the closest goal item to the player
-        int closestIndex = FindClosestGoalItem();
-
-        // If the player is within range of the closest object
-        if (isWithinValidRange(closestIndex))
+        // Check if the player still needs to steal anything
+        if (goalItems.Count > 0)
         {
-            Debug.Log("Current closest goal item index: " + closestIndex);
+            // Find the closest goal item to the player
+            int closestIndex = FindClosestGoalItem();
 
-            if (Input.GetKey(KeyCode.U) && goalItems.Count > 0)
+            // If the player is within range of the closest object
+            if (isWithinValidRange(closestIndex))
             {
-                // Show the slider to the player to indicate stealing progress
-                playerStealSlider.gameObject.SetActive(true);
+                Debug.Log("Current closest goal item index: " + closestIndex);
 
-                stealTimer += Time.deltaTime;           // Time accumulating
-                playerStealSlider.value = stealTimer;   // Update the slider value
-
-                // When the stealing progress reaches 100%
-                if (stealTimer >= timeToSteal)
+                if (Input.GetKey(KeyCode.U))
                 {
-                    Steal(FindClosestGoalItem());                   // Steal the item
-                    stealTimer = 0f;                                // Reset the timer
-                    playerStealSlider.gameObject.SetActive(false);  // Hide the slider
+                    // Show the slider to the player to indicate stealing progress
+                    playerStealSlider.gameObject.SetActive(true);
 
-                    // Remove the item from the list since it has been stolen
-                    goalItems.RemoveAt(closestIndex);
+                    stealTimer += Time.deltaTime;           // Time accumulating
+                    playerStealSlider.value = stealTimer;   // Update the slider value
+
+                    // When the stealing progress reaches 100%
+                    if (stealTimer >= timeToSteal)
+                    {
+                        Steal(FindClosestGoalItem());                   // Steal the item
+                        stealTimer = 0f;                                // Reset the timer
+                        playerStealSlider.gameObject.SetActive(false);  // Hide the slider
+
+                        // Remove the item from the list since it has been stolen
+                        goalItems.RemoveAt(closestIndex);
+                    }
                 }
             }
-        }
 
-        // If the player is not within the range of any objects
-        else
-        {
-            playerStealSlider.gameObject.SetActive(false);  // Hide the slider
-            playerStealSlider.value = 0;
+            // If the player is not within the range of any objects
+            else
+            {
+                playerStealSlider.gameObject.SetActive(false);  // Hide the slider
+                playerStealSlider.value = 0;
+            }
+
         }
     }
 
