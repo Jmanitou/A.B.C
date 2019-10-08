@@ -10,6 +10,7 @@ public class Stealing : MonoBehaviour
     [SerializeField] private float timeToSteal = 3.0f;
     [SerializeField] private float stealTimer = 0f;
     public Slider playerStealSlider;
+    public Text StealHintText;
 
     [SerializeField] 
     [Range(0f, 3f)]
@@ -42,7 +43,8 @@ public class Stealing : MonoBehaviour
             // If the player is within range of the closest object
             if (isWithinValidRange(GameStats.closestItemIndex))
             {
-                //Debug.Log("Current closest goal item index: " + closestIndex);
+                // Hide the hint
+                StealHintText.enabled = true;
 
                 if (Input.GetKey(KeyCode.U))
                 {
@@ -76,6 +78,9 @@ public class Stealing : MonoBehaviour
             {
                 playerStealSlider.gameObject.SetActive(false);  // Hide the slider
                 playerStealSlider.value = 0;
+
+                // Hide the hint
+                StealHintText.enabled = false;
             }
 
         }
@@ -98,15 +103,8 @@ public class Stealing : MonoBehaviour
         if (Vector2.Distance(playerTransform.position, GameStats.goalItems[index].transform.position) <= range)
         {
             GameStats.NumOfItems++;
-            // Disable the child (museum collection) of a goal item
+            // Disable the child (museum treasure) of a goal item
             GameStats.goalItems[index].transform.GetChild(0).gameObject.SetActive(false);
         }
-    }
-
-    public void OnDrawGizmosSelected()
-    {
-        // Draw the range of the object
-        Gizmos.color = Color.yellow;
-        //Gizmos.DrawWireSphere(GameStats.goalItems[GameStats.closestItemIndex].transform.position, range);
     }
 }

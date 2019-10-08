@@ -8,9 +8,14 @@ public class DarkMode : MonoBehaviour
     public Material shinyMat;   // Material for museum object
 
     public Light playerPointLight;  // Reference to the point light from the player
-    public LayerMask goalItemLayerMask = 0;
+    [SerializeField] 
+    [Range(0f, 2f)]
+    private float lightRange = 5f;
 
     [SerializeField] private List<GameObject> darkenObjects = null;
+
+    [SerializeField] private GameObject closestTreasure;
+    private bool ifTreasureIsShiny = false;
 
     void Awake()
     {
@@ -31,8 +36,8 @@ public class DarkMode : MonoBehaviour
 
         foreach (GameObject goalItem in goalItems)
         {
-            darkenObjects.Add(goalItem.transform.GetChild(0).gameObject);
-            darkenObjects.Add(goalItem.transform.GetChild(1).gameObject);
+            darkenObjects.Add(goalItem.transform.GetChild(0).gameObject); // Treasure
+            darkenObjects.Add(goalItem.transform.GetChild(1).gameObject); // Pedestal
         }
 
         GameObject[] otherItems = GameObject.FindGameObjectsWithTag("Dark");
@@ -45,19 +50,52 @@ public class DarkMode : MonoBehaviour
         {
             darkenObjects[i].GetComponent<Renderer>().material = darkMat;
         }
+
+        // Initialize closest treasure to the player
+        closestTreasure = GameStats.goalItems.Count > 0 ?
+            GameStats.goalItems[GameStats.closestItemIndex].gameObject.transform.GetChild(0).gameObject : null;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (GameStats.goalItems.Count > 0)
+        {
+            Debug.Log(GameStats.closestItemIndex);
+            // Update the reference to the closest treasure
+            closestTreasure = GameStats.goalItems[GameStats.closestItemIndex].gameObject.transform.GetChild(0).gameObject;
+
+            // Update the treasure's material
+            // If light hit a treasure, and the treasure is not shiny
+            if (LightHitsGoalItem() && !ifTreasureIsShiny)
+            {
+                Debug.Log("Point light hits ITEM " + GameStats.closestItemIndex);
+                closestTreasure.GetComponent<Renderer>().material = shinyMat;
+                ifTreasureIsShiny = true;
+            }
+            // If light did not hit any treasure, and the treasure is shiny
+            else if (!LightHitsGoalItem() && ifTreasureIsShiny)
+            {
+                closestTreasure.GetComponent<Renderer>().material = darkMat;
+                ifTreasureIsShiny = false;
+            }
+        }
     }
 
     // Light up the goal item when the player's point light hits
-    bool LightingUpGoalItem()
+    bool LightHitsGoalItem()
     {
-        GameObject closestItem = GameStats.goalItems[GameStats.closestItemIndex].gameObject;
-        RaycastHit2D circleCast2D = Physics2D.CircleCast(playerPointLight.transform.position, playerPointLight.range, closestItem.transform.position - playerPointLight.transform.position, 0.01f, goalItemLayerMask);
-        return circleCast2D.collider != null;
+        if (Vector2.Distance(closestTreasure.transform.position, playerPointLight.transform.position)
+            <= lightRange + closestTreasure.GetComponent<SpriteRenderer>().bounds.extents.magnitude)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(playerPointLight.transform.position, lightRange);
     }
 }

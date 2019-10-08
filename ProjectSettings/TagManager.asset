@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GoalItem
   - Dark
+  - Treasure
   layers:
   - Default
   - TransparentFX

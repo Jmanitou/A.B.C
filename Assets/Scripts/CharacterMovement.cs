@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    [SerializeField] private float horizontalSpeed = 2.0f;
+    [SerializeField] [Range(1f, 5f)]
+    private float horizontalSpeed = 2.0f;
+    [SerializeField] [Range(1f, 5f)]
+    private float slowerSpeed = 1.5f;
+    [SerializeField] [Range(1f, 5f)]
+    private float slowestSpeed = 1.0f;
+
     [SerializeField] private float jumpVelocity = 10.0f;
 
     // Collision Variables
@@ -41,6 +47,7 @@ public class CharacterMovement : MonoBehaviour
         else if (horizontalVal > 0) FlipCharacter(true);
 
         // Character moves horizontally
+        MovementSlowDown();
         Vector3 horizontal = new Vector3(horizontalVal, 0.0f, 0.0f);
         transform.position += horizontal * horizontalSpeed * Time.deltaTime;
     }
@@ -54,7 +61,17 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    
+    // Slow down the player's movement based on the inventory item number
+    void MovementSlowDown()
+    {
+        int treasureNum = GameStats.NumOfItems;
+        switch (treasureNum)
+        {
+            case 3: horizontalSpeed = slowerSpeed; break;
+            case 4: horizontalSpeed = slowerSpeed; break;
+            case 5: horizontalSpeed = slowestSpeed; break;
+        }
+    }
 
     #region Helper Methods
     // Flip the character when facing/walking left

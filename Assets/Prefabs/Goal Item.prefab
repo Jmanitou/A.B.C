@@ -43,8 +43,8 @@ GameObject:
   - component: {fileID: 1385911503978503785}
   - component: {fileID: 4646293336103470182}
   m_Layer: 9
-  m_Name: Artifact
-  m_TagString: Untagged
+  m_Name: Treasure
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
