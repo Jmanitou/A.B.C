@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3940517797959358343}
   - component: {fileID: 3940517797959358395}
   - component: {fileID: 3940517797959358392}
-  - component: {fileID: 3940517797959358393}
+  - component: {fileID: 1372119063692518177}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -130,7 +130,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.9809414, y: 4.4396634}
   m_EdgeRadius: 0
---- !u!114 &3940517797959358393
+--- !u!114 &1372119063692518177
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
