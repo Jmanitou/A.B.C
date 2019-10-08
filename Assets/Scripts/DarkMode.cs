@@ -69,7 +69,7 @@ public class DarkMode : MonoBehaviour
             // If light hit a treasure, and the treasure is not shiny
             if (LightHitsGoalItem() && !ifTreasureIsShiny)
             {
-                Debug.Log("Point light hits ITEM " + GameStats.closestItemIndex);
+                //Debug.Log("Point light hits ITEM " + GameStats.closestItemIndex);
                 closestTreasure.GetComponent<Renderer>().material = shinyMat;
                 ifTreasureIsShiny = true;
             }
