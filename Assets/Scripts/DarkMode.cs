@@ -61,7 +61,6 @@ public class DarkMode : MonoBehaviour
     {
         if (GameStats.goalItems.Count > 0)
         {
-            Debug.Log(GameStats.closestItemIndex);
             // Update the reference to the closest treasure
             closestTreasure = GameStats.goalItems[GameStats.closestItemIndex].gameObject.transform.GetChild(0).gameObject;
 
@@ -69,7 +68,6 @@ public class DarkMode : MonoBehaviour
             // If light hit a treasure, and the treasure is not shiny
             if (LightHitsGoalItem() && !ifTreasureIsShiny)
             {
-                //Debug.Log("Point light hits ITEM " + GameStats.closestItemIndex);
                 closestTreasure.GetComponent<Renderer>().material = shinyMat;
                 ifTreasureIsShiny = true;
             }

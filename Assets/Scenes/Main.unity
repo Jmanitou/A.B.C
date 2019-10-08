@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1678060938}
-  timeToSteal: 3
+  timeToSteal: 2
   stealTimer: 0
   playerStealSlider: {fileID: 465413039}
   StealHintText: {fileID: 353280456}
