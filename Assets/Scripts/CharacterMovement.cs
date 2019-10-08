@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class CharacterMovement : MonoBehaviour
 {
@@ -43,13 +44,15 @@ public class CharacterMovement : MonoBehaviour
         float horizontalVal = Input.GetAxis("Horizontal");
 
         // Flip the character sprite when facing left
-        if (horizontalVal < 0) FlipCharacter(false);
-        else if (horizontalVal > 0) FlipCharacter(true);
+        if (horizontalVal < 0) FlipCharacter(true);
+        else if (horizontalVal > 0) FlipCharacter(false);
 
         // Character moves horizontally
         MovementSlowDown();
         Vector3 horizontal = new Vector3(horizontalVal, 0.0f, 0.0f);
         transform.position += horizontal * horizontalSpeed * Time.deltaTime;
+
+        transform.GetComponent<Animator>().SetFloat("WalkSpeed", Mathf.Abs(horizontalVal));
     }
 
     // Control if character needs to jump
