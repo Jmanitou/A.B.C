@@ -12,6 +12,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] [Range(1f, 5f)]
     private float slowestSpeed = 1.0f;
 
+    [SerializeField] private float horizontalVal = 0f;
+
     [SerializeField] private float jumpVelocity = 10.0f;
 
     // Collision Variables
@@ -41,7 +43,7 @@ public class CharacterMovement : MonoBehaviour
     // Control character's horizontal movement
     void MoveHorizontally()
     {
-        float horizontalVal = Input.GetAxis("Horizontal");
+        horizontalVal = Input.GetAxis("Horizontal");
 
         // Flip the character sprite when facing left
         if (horizontalVal < 0) FlipCharacter(true);
