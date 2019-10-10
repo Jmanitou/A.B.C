@@ -77,6 +77,7 @@ public class Stealing : MonoBehaviour
             else
             {
                 playerStealSlider.gameObject.SetActive(false);  // Hide the slider
+                stealTimer = 0;
                 playerStealSlider.value = 0;
 
                 // Hide the hint
