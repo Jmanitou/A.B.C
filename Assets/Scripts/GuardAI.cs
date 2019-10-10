@@ -28,8 +28,7 @@ public class GuardAI : MonoBehaviour
     {
         // Initialize guard's movement
         spawnPosition = transform.position;
-        isGoingLeft = true;
-        FlipSprite();
+        isGoingLeft = false;
 
         // Initialize guard's state
         currentState = StateType.Patrol;
@@ -77,11 +76,13 @@ public class GuardAI : MonoBehaviour
         {
             // Move leftward
             transform.Translate(-guardPatrolSpeed * Time.deltaTime, 0, 0);
+            FlipSprite();
         }
         else
         {
             // Move rightward
             transform.Translate(guardPatrolSpeed * Time.deltaTime, 0, 0);
+            FlipSprite();
         }
 
         // ==== STATE TRANSITION ====
@@ -111,7 +112,7 @@ public class GuardAI : MonoBehaviour
     }
 
     // Flip the guard sprite based on the direction he's facing
-    void FlipSprite() { GetComponent<SpriteRenderer>().flipX = !isGoingLeft ? true : false; }
+    void FlipSprite() { GetComponent<SpriteRenderer>().flipX = isGoingLeft ? true : false; }
 
     // Flip flashlight direction based on the guard's facing direction
     void FlipLight()
