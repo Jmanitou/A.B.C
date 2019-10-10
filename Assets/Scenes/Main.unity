@@ -12840,6 +12840,11 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 39.2
       objectReference: {fileID: 0}
+    - target: {fileID: 1372119063692518177, guid: 33f0708e65c423149bc97e58dbd54995,
+        type: 3}
+      propertyPath: patrolDist
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
 --- !u!1001 &5187343495492784840

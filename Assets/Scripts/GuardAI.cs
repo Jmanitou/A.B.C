@@ -19,7 +19,7 @@ public class GuardAI : MonoBehaviour
     // Patrol Movement Variables
     [SerializeField] [Range(0f, 10f)] private float guardPatrolSpeed = 5f;
     [SerializeField] bool isGoingLeft = false;
-    [SerializeField] [Range(0f, 50f)] float patrolDist = 30.0f;     // Max distance for patrolling
+    [SerializeField] [Range(0f, 15f)] float patrolDist = 30.0f;     // Max distance for patrolling
 
     // Start is called before the first frame update
     void Start()
@@ -70,7 +70,7 @@ public class GuardAI : MonoBehaviour
         float distFromSpawn = transform.position.x - spawnPosition.x;
 
         // Gone too far, switch patrol direction
-        if (Mathf.Abs(distFromSpawn) >= patrolDist)
+        if (distFromSpawn > patrolDist || distFromSpawn < -patrolDist)
             SwitchDirection();
 
         if (isGoingLeft)
@@ -94,7 +94,20 @@ public class GuardAI : MonoBehaviour
     }
 
     void FlipSprite() { GetComponent<SpriteRenderer>().flipX = !isGoingLeft ? true : false; }
-    void FlipLight() { flashLight.transform.Rotate(new Vector3(0f, 180f, 0f), Space.World); }
+    void FlipLight()
+    {
+        // Flip relative position
+        float lightPosX = flashLight.transform.localPosition.x;
+        float lightPosY = flashLight.transform.localPosition.y;
+        float lightPosZ = flashLight.transform.localPosition.z;
+        flashLight.transform.localPosition = new Vector3(-lightPosX, lightPosY, lightPosZ);
+
+        // Flip relative rotation
+        float lightRotX = flashLight.transform.localRotation.eulerAngles.x;
+        float lightRotY = flashLight.transform.localRotation.eulerAngles.y;
+        float lightRotZ = flashLight.transform.localRotation.eulerAngles.z;
+        flashLight.transform.localRotation = Quaternion.Euler(new Vector3(180 - lightRotX, lightRotY, lightRotZ));
+    }
 
     #endregion
 }
