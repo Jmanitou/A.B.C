@@ -70,8 +70,8 @@ public class Stealing : MonoBehaviour
                 {
                     // If not holding stealing key, hide the slider
                     playerStealSlider.gameObject.SetActive(false);
-                    stealTimer = 0f;
-                    playerStealSlider.value = 0f;
+                    stealTimer = 0;
+                    playerStealSlider.value = 0;
                 }
             }
 
