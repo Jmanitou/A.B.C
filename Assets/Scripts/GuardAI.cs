@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum StateType
+ public enum StateType
 {
     Patrol,
+    Investigate,
+    Pursue,
     Alert,
-    Chase
+    Incapacitated
 }
 
 public class GuardAI : MonoBehaviour
@@ -24,32 +26,25 @@ public class GuardAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Initialize guard's state
-        currentState = StateType.Patrol;
-
+        // Initialize guard's movement
         spawnPosition = transform.position;
         isGoingLeft = true;
         FlipSprite();
+
+        // Initialize guard's state
+        currentState = StateType.Patrol;
+
+        // Start the Finite State Machine
+        StartCoroutine(GuardFSM());
     }
 
-    // Update is called once per frame
-    void Update()
+    // FSM Control
+    IEnumerator GuardFSM()
     {
-        UpdateState(currentState);
-    }
-
-    // Implementation of a state FSM
-    void UpdateState(StateType currentState)
-    {
-        switch (currentState)
+        // Execute the current coroutine (state)
+        while (true)
         {
-            case StateType.Patrol:
-                Patrol();
-                break;
-            case StateType.Chase:
-                break;
-            case StateType.Alert:
-                break;
+            yield return StartCoroutine(currentState.ToString());
         }
     }
 
@@ -63,10 +58,15 @@ public class GuardAI : MonoBehaviour
         }
     }
 
-    #region Helper Methods
-
-    void Patrol()
+    // Patrol State
+    private IEnumerator Patrol()
     {
+        // Debugging
+        Debug.Log("Entering PATROL state");
+        yield return null;
+
+        // ==== EXECUTE PART OF PATROL STATE ====
+
         float distFromSpawn = transform.position.x - spawnPosition.x;
 
         // Gone too far, switch patrol direction
@@ -83,7 +83,24 @@ public class GuardAI : MonoBehaviour
             // Move rightward
             transform.Translate(guardPatrolSpeed * Time.deltaTime, 0, 0);
         }
+
+        // ==== STATE TRANSITION ====
+
+        if (transform.position.x < 5f)
+        {
+            currentState = StateType.Investigate;
+        }
     }
+
+    // Investigate State
+    private IEnumerator Investigate()
+    {
+        // Debugging
+        Debug.Log("Entering INVESTIGATE state");
+        yield return null;
+    }
+
+    #region Helper Methods
 
     // Switch the movement direction
     void SwitchDirection()
@@ -93,7 +110,10 @@ public class GuardAI : MonoBehaviour
         FlipLight();
     }
 
+    // Flip the guard sprite based on the direction he's facing
     void FlipSprite() { GetComponent<SpriteRenderer>().flipX = !isGoingLeft ? true : false; }
+
+    // Flip flashlight direction based on the guard's facing direction
     void FlipLight()
     {
         // Flip relative position

@@ -60,7 +60,7 @@ public class CharacterMovement : MonoBehaviour
     // Control if character needs to jump
     void Jump()
     {
-        if (isGrounded() && Input.GetKeyDown(KeyCode.W))
+        if (isGrounded() && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
         {
             rigidbody2D.velocity = Vector2.up * jumpVelocity;
         }

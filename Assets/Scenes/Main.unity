@@ -11761,6 +11761,7 @@ MonoBehaviour:
   dematerlized: 0
   runOutOfTime: 0
   dematerlizeTime: 0
+  pressed: 0
 --- !u!1 &1698642042
 GameObject:
   m_ObjectHideFlags: 0
@@ -12843,7 +12844,7 @@ PrefabInstance:
     - target: {fileID: 1372119063692518177, guid: 33f0708e65c423149bc97e58dbd54995,
         type: 3}
       propertyPath: patrolDist
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
