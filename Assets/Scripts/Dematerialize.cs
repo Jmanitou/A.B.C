@@ -11,6 +11,7 @@ public class Dematerialize : MonoBehaviour
     public bool dematerlized;
     public bool runOutOfTime;
     public float dematerlizeTime;
+    public bool pressed;
 
     // Start is called before the first frame update
     void Start()
@@ -20,10 +21,8 @@ public class Dematerialize : MonoBehaviour
         dematerlized = false;
         runOutOfTime = false;
         playerColor = gameObject.GetComponent<Renderer>().material.color;
-
-        demateralizeSlider.gameObject.SetActive(false);
-
-        // Set slider
+        pressed = false;
+        demateralizeSlider.gameObject.SetActive(true);
         demateralizeSlider.maxValue = 3.0f;
         demateralizeSlider.value = dematerlizeTime;
     }
@@ -48,27 +47,29 @@ public class Dematerialize : MonoBehaviour
         {
             runOutOfTime = true;
             dematerlized = false;
-            demateralizeSlider.gameObject.SetActive(false);
-            gameObject.GetComponent<Renderer>().material.color = playerColor;
+            gameObject.GetComponent<Renderer>().material.color = playerColor; 
         }
         else if (dematerlizeTime >= 3.0f)
         {
             runOutOfTime = false;
         }
 
-        if (Input.GetKey(KeyCode.P) && !runOutOfTime)
+        if (Input.GetKey(KeyCode.P) && !runOutOfTime && pressed == false)
         {
+            pressed = true;
             if (!dematerlized)
             {
-                demateralizeSlider.gameObject.SetActive(true);
                 gameObject.GetComponent<Renderer>().material.color = dematerlizeColor;
             }
             else
             {
-                demateralizeSlider.gameObject.SetActive(false);
                 gameObject.GetComponent<Renderer>().material.color = playerColor;
             }
             dematerlized = !dematerlized;
+        }
+        if (!Input.GetKey(KeyCode.P) && pressed == true)
+        {
+            pressed = false;
         }
     }
 }
