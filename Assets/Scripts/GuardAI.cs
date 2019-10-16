@@ -6,22 +6,34 @@ using UnityEngine;
 {
     Patrol,
     Investigate,
-    Pursue,
     Alert,
+    Pursue,
     Incapacitated
 }
 
 public class GuardAI : MonoBehaviour
 {
-    // General Variables
-    [SerializeField] private StateType currentState = 0;
-    private Vector2 spawnPosition;
-    public GameObject flashLight;
+    #region Fields
+
+    [Header("General Attributes of AI")]
+    [SerializeField] private StateType currentState = 0;    // stores the current state of the AI
+    private Vector2 spawnPosition;                          // stores the original spawning location of the guard
+    public GameObject flashLight;                           // a reference to the guard's flashlight
+
+    [Header("Sprite/Animation Info")]
+    [SerializeField] bool isGoingLeft = false;              // boolean that stores if the sprite needs to be flipped
+    [SerializeField] bool isIdling = true;                  // boolean that stores if the guard is idling
+    [SerializeField] bool isWalking = false;                // boolean that stores if the guard is walking
 
     // Patrol Movement Variables
-    [SerializeField] [Range(0f, 10f)] private float guardPatrolSpeed = 5f;
-    [SerializeField] bool isGoingLeft = false;
-    [SerializeField] [Range(0f, 15f)] float patrolDist = 30.0f;     // Max distance for patrolling
+    [Header("Patrol State Attributes")]
+    [SerializeField]
+    [Range(0f, 10f)] private float guardPatrolSpeed = 5f;   // the patrol speed of the guard
+    [SerializeField]
+    [Range(0f, 15f)] float patrolDist = 30.0f;              // Max distance for patrolling
+
+    #endregion
+
 
     // Start is called before the first frame update
     void Start()
@@ -131,4 +143,10 @@ public class GuardAI : MonoBehaviour
     }
 
     #endregion
+
+    // Debug visualization
+    private void OnDrawGizmosSelected()
+    {
+        
+    }
 }
