@@ -146,9 +146,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   flashLight: {fileID: 3940517799081048679}
-  guardPatrolSpeed: 1
+  guardAnimator: {fileID: 1079433699316575113}
+  playerTransform: {fileID: 0}
   isGoingLeft: 0
-  patrolDist: 5
+  isIdling: 1
+  isWalking: 0
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  currentWPIndex: 0
+  softCatchRadius: 6.36
+  hardCatchRadius: 3.76
+  guardPatrolSpeed: 1
 --- !u!95 &1079433699316575113
 Animator:
   serializedVersion: 3
@@ -192,13 +201,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3940517799081048679}
-  m_LocalRotation: {x: 0.6963643, y: -0.122787856, z: 0.6963643, w: 0.122787856}
-  m_LocalPosition: {x: -0.39, y: 0.08, z: 1.39}
+  m_LocalRotation: {x: 0.68955344, y: -0.15657628, z: 0.68955344, w: 0.15657626}
+  m_LocalPosition: {x: -0.33, y: 0.2, z: 1.39}
   m_LocalScale: {x: 2.019957, y: 2.0199573, z: 2.019957}
   m_Children: []
   m_Father: {fileID: 3940517797959358342}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 160, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 154.414, y: -90, z: -0.000015258789}
 --- !u!108 &3940517799081048678
 Light:
   m_ObjectHideFlags: 0
@@ -210,7 +219,7 @@ Light:
   serializedVersion: 9
   m_Type: 0
   m_Color: {r: 1, g: 0.98254716, b: 0.8254717, a: 1}
-  m_Intensity: 39.2
+  m_Intensity: 45
   m_Range: 43.720383
   m_SpotAngle: 37.09
   m_InnerSpotAngle: 21.80208

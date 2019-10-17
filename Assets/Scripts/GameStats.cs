@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class GameStats : MonoBehaviour
 {
+    // Collectibles
     public static int NumOfItems;
     [SerializeField]
     private int startNumOfItems = 0;
 
+    // Museum
+    public static bool isMuseumAlert = false;
+
+    // Time Limit
     public static float TimeLimit;
     [SerializeField]
     private float timeLimit = 60.0f;
 
+    // Reference to goal items
     public static List<GameObject> goalItems;
     public static int closestItemIndex = 0;     // The closest goal item to the player
 
+    // Reference to the player
     public Transform playerTransform;
 
     void Awake()
