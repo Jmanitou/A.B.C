@@ -22,6 +22,8 @@ public class CharacterMovement : MonoBehaviour
     private new Rigidbody2D rigidbody2D;
     private BoxCollider2D boxCollider2D;
 
+    public List<Item> inventory;
+
     void Awake()
     {
         rigidbody2D = transform.GetComponent<Rigidbody2D>();
@@ -31,6 +33,7 @@ public class CharacterMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        inventory = new List<Item>();
     }
 
     // Update is called once per frame

@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Item : MonoBehaviour
 {
-    List<GameObject> inventory = new List<GameObject>();
-
+    public int number; //used to identify which puzzle the item corresponds to.
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +17,4 @@ public class Inventory : MonoBehaviour
         
     }
 
-    void UseItem()
-    {
-
-    }
 }
