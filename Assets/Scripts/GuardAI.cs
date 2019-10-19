@@ -240,6 +240,7 @@ public class GuardAI : MonoBehaviour
     {
         return false;
     }
+
     #endregion
 
     #region MonoBehaviour Messages
