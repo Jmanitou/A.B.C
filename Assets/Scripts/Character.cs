@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class CharacterMovement : MonoBehaviour
+public class Character : MonoBehaviour
 {
     [SerializeField] [Range(1f, 5f)]
     private float horizontalSpeed = 2.0f;

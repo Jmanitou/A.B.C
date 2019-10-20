@@ -51,7 +51,7 @@ LightmapSettings:
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
     m_EnvironmentLightingMode: 0
-    m_EnableBakedLightmaps: 0
+    m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 12
@@ -96,7 +96,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: ed5a77b78afc09b4e9d1b823f908e6c5,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -260,6 +261,7 @@ GameObject:
   - component: {fileID: 138210833}
   - component: {fileID: 138210835}
   - component: {fileID: 138210836}
+  - component: {fileID: 138210837}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -353,6 +355,18 @@ MonoBehaviour:
   isMuseumOnAlert: 0
   alarmAlphaMax: 0.15
   alarmFlashTime: 0.6
+--- !u!114 &138210837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138210831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d45cf1a4778d454cab5c887b414e5bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &161952889
 GameObject:
   m_ObjectHideFlags: 0
