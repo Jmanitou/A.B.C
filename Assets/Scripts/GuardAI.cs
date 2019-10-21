@@ -154,12 +154,12 @@ public class GuardAI : MonoBehaviour
         }
 
         // Investigate -> Alert: Hard catch/museum is alerted
-        //if (IsHardCaught())
-        //{
-        //    isAOIInitialized = false;
-        //    timesOfSearch_i = 0;
-        //    currentState = StateType.Alert;
-        //}
+        if (IsHardCaught())
+        {
+            isAOIInitialized = false;
+            timesOfSearch_i = 0;
+            currentState = StateType.Alert;
+        }
 
     }
 
@@ -233,7 +233,6 @@ public class GuardAI : MonoBehaviour
         if (Mathf.Abs(_waypoints[currentWPIndex].x - transform.position.x) < 0.1f)
         {
             UpdateWaypointIndex(_waypoints);
-            Debug.Log("Current waypoint index is: " + currentWPIndex);
         }
 
         transform.Translate(Seek(_waypoints[currentWPIndex], maxSpeed) * Time.deltaTime);

@@ -19,6 +19,9 @@ public class Dematerialize : MonoBehaviour
         dematerlizeColor.a = 0.5f;
         dematerlizeTime = 3.0f;
         dematerlized = false;
+
+        SetIsDematerialized();
+
         runOutOfTime = false;
         playerColor = gameObject.GetComponent<Renderer>().material.color;
         pressed = false;
@@ -47,6 +50,7 @@ public class Dematerialize : MonoBehaviour
         {
             runOutOfTime = true;
             dematerlized = false;
+            SetIsDematerialized();
             gameObject.GetComponent<Renderer>().material.color = playerColor; 
         }
         else if (dematerlizeTime >= 3.0f)
@@ -66,10 +70,17 @@ public class Dematerialize : MonoBehaviour
                 gameObject.GetComponent<Renderer>().material.color = playerColor;
             }
             dematerlized = !dematerlized;
+            SetIsDematerialized();
         }
         if (!Input.GetKey(KeyCode.P) && pressed == true)
         {
             pressed = false;
         }
+    }
+
+    // Set global boolean isDematerialized
+    private void SetIsDematerialized()
+    {
+        GameStats.isDematerialized = dematerlized;
     }
 }

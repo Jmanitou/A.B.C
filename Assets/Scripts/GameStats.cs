@@ -23,6 +23,7 @@ public class GameStats : MonoBehaviour
 
     // Reference to the player
     public Transform playerTransform;
+    public static bool isDematerialized;
 
     void Awake()
     {
@@ -35,6 +36,7 @@ public class GameStats : MonoBehaviour
     {
         NumOfItems = startNumOfItems;
         TimeLimit = timeLimit;
+        isDematerialized = false;
     }
 
     void Update()
