@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
  public enum StateType
 {
     Patrol,
     Investigate,
     Alert,
-    Pursue,
-    Incapacitated
+    Pursue
+    //Incapacitated
 }
 
 public class GuardAI : MonoBehaviour
@@ -38,6 +39,13 @@ public class GuardAI : MonoBehaviour
     [SerializeField] [Range(0f, 10f)] private float hardCatchRadius = 3f;   // radius for guard hard catches player
     [SerializeField] [Range(0f, 10f)] private float guardPatrolSpeed = 5f;  // the patrol speed of the guard
 
+    // UI
+    [Header("UI")]
+    [SerializeField] private Image speechBubbleImg;
+    [SerializeField] private Text exclamationText;
+    [SerializeField] private bool isBubbleOn = false;
+    [SerializeField] private bool isTextOn = false;
+
     #endregion
 
     // Start is called before the first frame update
@@ -49,6 +57,9 @@ public class GuardAI : MonoBehaviour
 
         // Initialize guard's state
         currentState = StateType.Patrol;
+
+        // Initialize UI
+        isBubbleOn = isTextOn = false;
 
         // Start the Finite State Machine
         StartCoroutine(GuardFSM());
@@ -78,6 +89,7 @@ public class GuardAI : MonoBehaviour
 
         // ==== EXECUTE PART OF PATROL STATE ====
 
+        ControlGuardUI(false, "");
         FollowPath(guardPatrolSpeed);
 
         // ==== STATE TRANSITION ====
@@ -90,9 +102,9 @@ public class GuardAI : MonoBehaviour
         if (IsHardCaught())
             currentState = StateType.Alert;
 
-        // Patrol -> Incapacitated: Knocked out
-        if (IsKnockedOut())
-            currentState = StateType.Incapacitated;
+        //// Patrol -> Incapacitated: Knocked out
+        //if (IsKnockedOut())
+        //    currentState = StateType.Incapacitated;
     }
 
     // Investigate State
@@ -104,6 +116,13 @@ public class GuardAI : MonoBehaviour
         // Debugging
         Debug.Log("Entering INVESTIGATE state");
         yield return null;
+
+        // ==== EXECUTE PART OF INVESTIGATE STATE ====
+
+        ControlGuardUI(true, "!");
+
+        // ==== STATE TRANSITION ====
+
     }
 
     // Alert State
@@ -241,6 +260,19 @@ public class GuardAI : MonoBehaviour
         return false;
     }
 
+    // Control the guard's speech bubble and exclamation marks UI
+    private void ControlGuardUI(bool isEnabled, string exclamations)
+    {
+        if (isEnabled && !isBubbleOn && !isTextOn)
+        {
+            Debug.Log("Enable Guard UI!!");
+            speechBubbleImg.GetComponent<Image>().enabled = true;
+            exclamationText.GetComponent<Text>().enabled = true;
+            isBubbleOn = isTextOn = true;
+            exclamationText.text = exclamations;
+        }
+    }
+
     #endregion
 
     #region MonoBehaviour Messages
@@ -275,7 +307,6 @@ public class GuardAI : MonoBehaviour
         Gizmos.DrawWireSphere(flashLight.transform.position, hardCatchRadius);
 
     }
-
 
     #endregion
 }
