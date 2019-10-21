@@ -48,6 +48,9 @@ public class GuardAI : MonoBehaviour
     public Vector2[] pointsToInvestigate;                                         // stores the points to investigate
     [SerializeField] private int timesOfSearch_i;                                     // stores the max number of investigating the AOI
 
+    [Header("ALERT Attributes")]
+    [SerializeField] [Range(0f, 10f)] private float guardAlertSpeed = 5f;
+
     // UI
     [Header("UI")]
     [SerializeField] private Image speechBubbleImg;
@@ -174,7 +177,14 @@ public class GuardAI : MonoBehaviour
 
         ControlGuardUI(true, "!");
         UIManager.isMuseumOnAlert = true;
+        FollowPath(ConvertTransformArray(waypoints), guardAlertSpeed);
 
+        // ==== STATE TRANSITION ====
+
+        if (IsSoftCaught() || IsHardCaught())
+        {
+            currentState = StateType.Pursue;
+        }
     }
 
     // Pursue State
@@ -183,6 +193,11 @@ public class GuardAI : MonoBehaviour
         // Debugging
         Debug.Log("Entering PURSUE state");
         yield return null;
+
+        // ==== EXECUTE PART OF INVESTIGATE STATE ====
+
+        ControlGuardUI(true, "!!");
+
 
     }
 
@@ -278,6 +293,11 @@ public class GuardAI : MonoBehaviour
         if (facingLeft != isGoingLeft && isWalking) SwitchDirection();
 
         return desiredVelocity;
+    }
+
+    private void Pursue(Vector2 targetPos)
+    {
+
     }
     
     // Animator controller
