@@ -101,7 +101,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1034493986}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.7}
+  m_LocalPosition: {x: 0, y: 0, z: -0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 672920099}
@@ -279,7 +279,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1729082608}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1417923048}
@@ -501,7 +501,7 @@ MonoBehaviour:
   flashLight: {fileID: 3940517799081048679}
   guardAnimator: {fileID: 1079433699316575113}
   playerTransform: {fileID: 0}
-  softCatchRadius: 6.36
+  softCatchRadius: 7
   hardCatchRadius: 3.76
   isGoingLeft: 0
   isIdling: 1
@@ -510,9 +510,15 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   currentWPIndex: 0
+  numOfSearchCycle: 0
   guardPatrolSpeed: 1
   areaOfInterest_center: {x: 0, y: 0}
   areaOfInterest_radius_i: 3
+  guardInvestigateSpeed: 1.5
+  isAOIInitialized: 0
+  pointsToInvestigate: []
+  timesOfSearch_i: 0
+  guardAlertSpeed: 3.5
   speechBubbleImg: {fileID: 672920100}
   exclamationText: {fileID: 1417923049}
   isBubbleOn: 1
