@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
 
     // Miscellaneous
     [Header("Miscellaneous")]
-    public bool isMuseumOnAlert = false;
+    public static bool isMuseumOnAlert = false;
     [SerializeField] [Range(0f, 0.5f)] private float alarmAlphaMax = 0.1f;
     [SerializeField] [Range(0f, 1f)] private float alarmFlashTime = 2f;
 

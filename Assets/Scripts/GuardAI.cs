@@ -22,6 +22,8 @@ public class GuardAI : MonoBehaviour
     public GameObject flashLight;                           // a reference to the guard's flashlight
     public Animator guardAnimator;                          // a reference to the guard's movement animator
     public Transform playerTransform;                       // a reference to the player's Transform info
+    [SerializeField] [Range(0f, 10f)] private float softCatchRadius = 8f;   // radius for guard soft catches player
+    [SerializeField] [Range(0f, 10f)] private float hardCatchRadius = 3f;   // radius for guard hard catches player
 
     [Header("Sprite/Animation Info")]
     [SerializeField] bool isGoingLeft = false;              // boolean that stores if the sprite needs to be flipped
@@ -32,12 +34,19 @@ public class GuardAI : MonoBehaviour
     [Header("Movement/Path Following Attributes")]
     [SerializeField] private Transform[] waypoints;
     public int currentWPIndex = 0;
+    public int numOfSearchCycle = 0;
 
     // States Variables
-    [Header("States Attributes")]
-    [SerializeField] [Range(0f, 10f)] private float softCatchRadius = 8f;   // radius for guard soft catches player
-    [SerializeField] [Range(0f, 10f)] private float hardCatchRadius = 3f;   // radius for guard hard catches player
-    [SerializeField] [Range(0f, 10f)] private float guardPatrolSpeed = 5f;  // the patrol speed of the guard
+    [Header("PATROL Attributes")]
+    [SerializeField] [Range(0f, 10f)] private float guardPatrolSpeed = 5f;          // the patrol speed of the guard
+
+    [Header("INVESTIGATE Attributes")]
+    [SerializeField] private Vector2 areaOfInterest_center;                         // the center position of the guard's area of interest
+    [SerializeField] [Range(0f, 10f)] private float areaOfInterest_radius_i;        // the radius of the guard's area of interest for investigation
+    [SerializeField] [Range(0f, 10f)] private float guardInvestigateSpeed = 5f;     // the investigate speed of the guard
+    [SerializeField] private bool isAOIInitialized = false;
+    public Vector2[] pointsToInvestigate;                                         // stores the points to investigate
+    [SerializeField] private int timesOfSearch_i;                                     // stores the max number of investigating the AOI
 
     // UI
     [Header("UI")]
@@ -59,11 +68,13 @@ public class GuardAI : MonoBehaviour
         currentState = StateType.Patrol;
 
         // Initialize UI
-        isBubbleOn = isTextOn = false;
+        ControlGuardUI(false, "");
 
         // Start the Finite State Machine
         StartCoroutine(GuardFSM());
     }
+
+    #region States Definitions
 
     // FSM Control
     IEnumerator GuardFSM()
@@ -75,8 +86,6 @@ public class GuardAI : MonoBehaviour
             yield return StartCoroutine(currentState.ToString());
         }
     }
-
-    #region States Definitions
 
     // Patrol State
     // Guard follows a set path navigating from point to point in an order, OR stays in one place.
@@ -90,7 +99,7 @@ public class GuardAI : MonoBehaviour
         // ==== EXECUTE PART OF PATROL STATE ====
 
         ControlGuardUI(false, "");
-        FollowPath(guardPatrolSpeed);
+        FollowPath(ConvertTransformArray(waypoints), guardPatrolSpeed);
 
         // ==== STATE TRANSITION ====
 
@@ -119,9 +128,38 @@ public class GuardAI : MonoBehaviour
 
         // ==== EXECUTE PART OF INVESTIGATE STATE ====
 
-        ControlGuardUI(true, "!");
+        ControlGuardUI(true, "?");
+        InitializeAOI();
+
+        if (numOfSearchCycle < timesOfSearch_i)
+            SearchAreaOfInterest();
 
         // ==== STATE TRANSITION ====
+
+        else
+        {
+            isAOIInitialized = false;
+            timesOfSearch_i = 0;
+
+            // Investigate -> Patrol: Searched around AOI and did not hard catch player
+            currentState = StateType.Patrol;
+        }
+
+        // Investigate -> Investigate: Soft catch again
+        if (IsSoftCaught())
+        {
+            isAOIInitialized = false;
+            timesOfSearch_i = 0;
+            currentState = StateType.Investigate;
+        }
+
+        // Investigate -> Alert: Hard catch/museum is alerted
+        //if (IsHardCaught())
+        //{
+        //    isAOIInitialized = false;
+        //    timesOfSearch_i = 0;
+        //    currentState = StateType.Alert;
+        //}
 
     }
 
@@ -131,6 +169,11 @@ public class GuardAI : MonoBehaviour
         // Debugging
         Debug.Log("Entering ALERT state");
         yield return null;
+
+        // ==== EXECUTE PART OF INVESTIGATE STATE ====
+
+        ControlGuardUI(true, "!");
+        UIManager.isMuseumOnAlert = true;
 
     }
 
@@ -143,14 +186,14 @@ public class GuardAI : MonoBehaviour
 
     }
 
-    // Incapacitated State
-    private IEnumerator Incapacitated()
-    {
-        // Debugging
-        Debug.Log("Entering INCAPACITATED state");
-        yield return null;
+    //// Incapacitated State
+    //private IEnumerator Incapacitated()
+    //{
+    //    // Debugging
+    //    Debug.Log("Entering INCAPACITATED state");
+    //    yield return null;
 
-    }
+    //}
 
     #endregion
 
@@ -184,16 +227,36 @@ public class GuardAI : MonoBehaviour
     }
 
     // Moves the agent along a series of waypoints forming a path
-    private void FollowPath(float maxSpeed)
+    private void FollowPath(Vector2[] _waypoints, float maxSpeed)
     {
         // Move to the next target if close enough to current target
-        if (Mathf.Abs(waypoints[currentWPIndex].position.x - transform.position.x) < 0.1f)
+        if (Mathf.Abs(_waypoints[currentWPIndex].x - transform.position.x) < 0.1f)
         {
-            currentWPIndex = (currentWPIndex == waypoints.Length - 1) ? 0 : currentWPIndex + 1;
+            UpdateWaypointIndex(_waypoints);
             Debug.Log("Current waypoint index is: " + currentWPIndex);
         }
 
-        transform.Translate(Seek(waypoints[currentWPIndex].position, maxSpeed) * Time.deltaTime);
+        transform.Translate(Seek(_waypoints[currentWPIndex], maxSpeed) * Time.deltaTime);
+    }
+
+    // Helper method to update current waypoint index
+    private void UpdateWaypointIndex(Vector2[] _waypoints)
+    {
+        if (currentWPIndex != _waypoints.Length - 1)
+        {
+            currentWPIndex++;
+        }
+        else
+        {
+            currentWPIndex = 0;
+            numOfSearchCycle++;
+        }
+    }
+
+    // AI Seeking behavior
+    public void AISeek(Vector2 targetPos, float maxSpeed)
+    {
+        transform.Translate(Seek(targetPos, maxSpeed) * Time.deltaTime);
     }
 
     // Returns a force that directs an agent toward a target position
@@ -224,6 +287,17 @@ public class GuardAI : MonoBehaviour
         guardAnimator.SetBool("IsWalking", isWalking);
     }
 
+    // Helper method to convert transform array to vector2 array (positions)
+    private Vector2[] ConvertTransformArray(Transform[] _transforms)
+    {
+        Vector2[] output = new Vector2[_transforms.Length];
+        for (int i = 0; i < output.Length; ++i)
+        {
+            output[i] = _transforms[i].position;
+        }
+        return output;
+    }
+
     // Check if the player is soft caught by guard
     // Soft Catch - Guard perceives something of interest and is motivated to investigate it 
     // but does not know there is an actual burglar.
@@ -234,6 +308,10 @@ public class GuardAI : MonoBehaviour
             Vector2.Distance(playerTransform.position, flashLight.transform.position) <= softCatchRadius)
         {
             Debug.Log("Player soft caught!");
+
+            // Set the area of interest for investigate state
+            areaOfInterest_center = isGoingLeft ? new Vector2(playerTransform.position.x - areaOfInterest_radius_i, playerTransform.position.y) :
+                                                  new Vector2(playerTransform.position.x + areaOfInterest_radius_i, playerTransform.position.y);
             return true;
         }
         return false;
@@ -265,12 +343,44 @@ public class GuardAI : MonoBehaviour
     {
         if (isEnabled && !isBubbleOn && !isTextOn)
         {
-            Debug.Log("Enable Guard UI!!");
             speechBubbleImg.GetComponent<Image>().enabled = true;
             exclamationText.GetComponent<Text>().enabled = true;
             isBubbleOn = isTextOn = true;
             exclamationText.text = exclamations;
         }
+        else if (!isEnabled && isBubbleOn && isTextOn)
+        {
+            speechBubbleImg.GetComponent<Image>().enabled = false;
+            exclamationText.GetComponent<Text>().enabled = false;
+            isBubbleOn = isTextOn = false;
+        }
+        exclamationText.text = exclamations;
+    }
+
+    // Initialize the area of interest for investigate state
+    private void InitializeAOI()
+    {
+        if (!isAOIInitialized)
+        {
+            // Reset the number of search times
+            numOfSearchCycle = 0;
+
+            pointsToInvestigate = new Vector2[2];
+
+            // store left and right points for investigation
+            pointsToInvestigate[0] = new Vector2(areaOfInterest_center.x - areaOfInterest_radius_i, areaOfInterest_center.y);
+            pointsToInvestigate[1] = new Vector2(areaOfInterest_center.x + areaOfInterest_radius_i, areaOfInterest_center.y);
+
+            timesOfSearch_i = Random.Range(2, 4); // Randomize a number for how many times the guard will search within the area
+
+            isAOIInitialized = true;
+        }
+    }
+
+    // When in investigate/pursue mode, search around the area of interest a couple of times
+    private void SearchAreaOfInterest()
+    {
+        FollowPath(pointsToInvestigate, guardInvestigateSpeed);
     }
 
     #endregion
@@ -280,6 +390,14 @@ public class GuardAI : MonoBehaviour
     // Ignore the collision between the guard and the player
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.layer == 10)
+        {
+            if (isAOIInitialized)
+            {
+                UpdateWaypointIndex(pointsToInvestigate);
+            }
+        }
+
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Guard collides with player");
@@ -301,10 +419,16 @@ public class GuardAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(flashLight.transform.position, softCatchRadius);
 
-
         // Hard Catch Range
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(flashLight.transform.position, hardCatchRadius);
+
+        // Area of Interest, if there is any
+        if (currentState == StateType.Investigate || currentState == StateType.Pursue)
+        {
+            Gizmos.color = new Color(0, 1, 1, 0.4f);    // Cyan
+            Gizmos.DrawSphere(areaOfInterest_center, areaOfInterest_radius_i);
+        }
 
     }
 
