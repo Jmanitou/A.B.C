@@ -13262,7 +13262,7 @@ PrefabInstance:
     - target: {fileID: 1372119063692518177, guid: 33f0708e65c423149bc97e58dbd54995,
         type: 3}
       propertyPath: softCatchRadius
-      value: 6.48
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1729082612, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
       propertyPath: m_Camera

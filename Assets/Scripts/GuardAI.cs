@@ -26,9 +26,9 @@ public class GuardAI : MonoBehaviour
     [SerializeField] [Range(0f, 10f)] private float hardCatchRadius = 3f;   // radius for guard hard catches player
 
     [Header("Sprite/Animation Info")]
-    [SerializeField] bool isGoingLeft = false;              // boolean that stores if the sprite needs to be flipped
-    [SerializeField] bool isIdling = true;                  // boolean that stores if the guard is idling
-    [SerializeField] bool isWalking = false;                // boolean that stores if the guard is walking
+    [SerializeField] private bool isGoingLeft = false;              // boolean that stores if the sprite needs to be flipped
+    [SerializeField] private bool isIdling = true;                  // boolean that stores if the guard is idling
+    [SerializeField] private bool isWalking = false;                // boolean that stores if the guard is walking
 
     // General Movement Variables
     [Header("Movement/Path Following Attributes")]
@@ -304,7 +304,8 @@ public class GuardAI : MonoBehaviour
     {
         bool isPlayerOnLeft = playerTransform.position.x - transform.position.x < 0 ? true : false;
         if (isGoingLeft == isPlayerOnLeft && 
-            Vector2.Distance(playerTransform.position, flashLight.transform.position) <= softCatchRadius)
+            Vector2.Distance(playerTransform.position, flashLight.transform.position) <= softCatchRadius &&
+            !IsPlayerDematerialized())
         {
             Debug.Log("Player soft caught!");
 
@@ -323,12 +324,18 @@ public class GuardAI : MonoBehaviour
     {
         bool isPlayerOnLeft = playerTransform.position.x - transform.position.x < 0 ? true : false;
         if (isGoingLeft == isPlayerOnLeft &&
-            Vector2.Distance(playerTransform.position, flashLight.transform.position) <= hardCatchRadius)
+            Vector2.Distance(playerTransform.position, flashLight.transform.position) <= hardCatchRadius &&
+            !IsPlayerDematerialized())
         {
             Debug.Log("Player hard caught!");
             return true;
         }
         return false;
+    }
+
+    private bool IsPlayerDematerialized()
+    {
+        return GameStats.isDematerialized;
     }
 
     // Check if the guard has been knocked out by the player

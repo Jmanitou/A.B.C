@@ -23,7 +23,7 @@ public class GameStats : MonoBehaviour
 
     // Reference to the player
     public Transform playerTransform;
-    public static bool isDematerialized;
+    public static bool isDematerialized = false;
 
     void Awake()
     {
