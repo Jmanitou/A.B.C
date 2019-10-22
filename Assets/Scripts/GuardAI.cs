@@ -24,6 +24,7 @@ public class GuardAI : MonoBehaviour
     public Transform playerTransform;                       // a reference to the player's Transform info
     [SerializeField] [Range(0f, 10f)] private float softCatchRadius = 8f;   // radius for guard soft catches player
     [SerializeField] [Range(0f, 10f)] private float hardCatchRadius = 3f;   // radius for guard hard catches player
+    [SerializeField] [Range(0f, 10f)] private float arrestRadius = 2f;      // radius for guard arrests player
 
     [Header("Sprite/Animation Info")]
     [SerializeField] private bool isGoingLeft = false;              // boolean that stores if the sprite needs to be flipped
@@ -31,25 +32,28 @@ public class GuardAI : MonoBehaviour
     [SerializeField] private bool isWalking = false;                // boolean that stores if the guard is walking
 
     // General Movement Variables
-    [Header("Movement/Path Following Attributes")]
+    [Header("Path Following Attributes")]
     [SerializeField] private Transform[] waypoints;
     public int currentWPIndex = 0;
     public int numOfSearchCycle = 0;
 
-    // States Variables
-    [Header("PATROL Attributes")]
+    [Header("Movement Speed")]
     [SerializeField] [Range(0f, 10f)] private float guardPatrolSpeed = 5f;          // the patrol speed of the guard
+    [SerializeField] [Range(0f, 10f)] private float guardInvestigateSpeed = 5f;     // the investigate speed of the guard
+    [SerializeField] [Range(0f, 10f)] private float guardAlertSpeed = 5f;
+    [SerializeField] [Range(0f, 10f)] private float guardPursueSpeed = 5f;
 
+    // Investigate State Variables
     [Header("INVESTIGATE Attributes")]
     [SerializeField] private Vector2 areaOfInterest_center;                         // the center position of the guard's area of interest
     [SerializeField] [Range(0f, 10f)] private float areaOfInterest_radius_i;        // the radius of the guard's area of interest for investigation
-    [SerializeField] [Range(0f, 10f)] private float guardInvestigateSpeed = 5f;     // the investigate speed of the guard
     [SerializeField] private bool isAOIInitialized = false;
-    public Vector2[] pointsToInvestigate;                                         // stores the points to investigate
-    [SerializeField] private int timesOfSearch_i;                                     // stores the max number of investigating the AOI
+    public Vector2[] pointsToInvestigate;                                           // stores the points to investigate
+    [SerializeField] private int timesOfSearch_i;                                   // stores the max number of investigating the AOI
 
-    [Header("ALERT Attributes")]
-    [SerializeField] [Range(0f, 10f)] private float guardAlertSpeed = 5f;
+    [Header("PURSUE Attributes")]
+    [SerializeField] private Vector2 posToPursue;                                   // the position for the guard to pursue
+    [SerializeField] private bool ifHitTheEnd;                                      // if the guard has pursued to the end or blockage
 
     // UI
     [Header("UI")]
@@ -104,6 +108,7 @@ public class GuardAI : MonoBehaviour
 
         // ==== EXECUTE PART OF PATROL STATE ====
 
+        SetSpeedMuliplier(1f);
         ControlGuardUI(false, "");
         FollowPath(ConvertTransformArray(waypoints), guardPatrolSpeed);
 
@@ -116,6 +121,9 @@ public class GuardAI : MonoBehaviour
         // Patrol -> Alert: Hard catch
         if (IsHardCaught())
             currentState = StateType.Alert;
+
+        if (IsArrested())
+            GameManager.GameOver();
 
         //// Patrol -> Incapacitated: Knocked out
         //if (IsKnockedOut())
@@ -134,6 +142,7 @@ public class GuardAI : MonoBehaviour
 
         // ==== EXECUTE PART OF INVESTIGATE STATE ====
 
+        SetSpeedMuliplier(guardInvestigateSpeed / guardPatrolSpeed);
         ControlGuardUI(true, "?");
         InitializeAOI();
 
@@ -167,6 +176,9 @@ public class GuardAI : MonoBehaviour
             currentState = StateType.Alert;
         }
 
+        if (IsArrested())
+            GameManager.GameOver();
+
     }
 
     // Alert State
@@ -178,6 +190,7 @@ public class GuardAI : MonoBehaviour
 
         // ==== EXECUTE PART OF INVESTIGATE STATE ====
 
+        SetSpeedMuliplier(guardAlertSpeed / guardPatrolSpeed);
         ControlGuardUI(true, "!");
         UIManager.isMuseumOnAlert = true;
         FollowPath(ConvertTransformArray(waypoints), guardAlertSpeed);
@@ -188,6 +201,10 @@ public class GuardAI : MonoBehaviour
         {
             currentState = StateType.Pursue;
         }
+
+        if (IsArrested())
+            GameManager.GameOver();
+
     }
 
     // Pursue State
@@ -200,8 +217,15 @@ public class GuardAI : MonoBehaviour
         // ==== EXECUTE PART OF INVESTIGATE STATE ====
 
         ControlGuardUI(true, "!!");
+        Pursue(posToPursue);
 
+        // ==== STATE TRANSITION ====
 
+        if (ifHitTheEnd)
+            currentState = StateType.Alert;
+
+        if (IsArrested())
+            GameManager.GameOver();
     }
 
     //// Incapacitated State
@@ -298,15 +322,30 @@ public class GuardAI : MonoBehaviour
         return desiredVelocity;
     }
 
+    // Pursue behavior of the guard AI
     private void Pursue(Vector2 targetPos)
     {
+        bool pursueLeft = (transform.position.x - targetPos.x > 0) ? true : false;
+        if (pursueLeft != isGoingLeft)
+            SwitchDirection();
 
+        if (pursueLeft)
+            transform.Translate(new Vector2(-guardPursueSpeed * Time.deltaTime, 0));
+        else
+            transform.Translate(new Vector2(guardPursueSpeed * Time.deltaTime, 0));
     }
-    
+
     // Animator controller
     private void ControlAnimation()
     {
         guardAnimator.SetBool("IsWalking", isWalking);
+    }
+
+    // Set walking animation speed multiplier
+    private void SetSpeedMuliplier(float _multiplier)
+    {
+        if (Mathf.Abs(_multiplier - guardAnimator.GetFloat("SpeedMultiplier")) > Mathf.Epsilon) // floats comparison, essentially doing "if these are not equal"
+            guardAnimator.SetFloat("SpeedMultiplier", _multiplier);
     }
 
     // Helper method to convert transform array to vector2 array (positions)
@@ -333,8 +372,13 @@ public class GuardAI : MonoBehaviour
             Debug.Log("Player soft caught!");
 
             // Set the area of interest for investigate state
-            areaOfInterest_center = isGoingLeft ? new Vector2(playerTransform.position.x - areaOfInterest_radius_i, playerTransform.position.y) :
-                                                  new Vector2(playerTransform.position.x + areaOfInterest_radius_i, playerTransform.position.y);
+            if (currentState == StateType.Patrol || currentState == StateType.Investigate)
+                areaOfInterest_center = isGoingLeft ? new Vector2(playerTransform.position.x - areaOfInterest_radius_i, playerTransform.position.y) :
+                                                      new Vector2(playerTransform.position.x + areaOfInterest_radius_i, playerTransform.position.y);
+
+            // Set the position to pursue
+            if (currentState == StateType.Alert)
+                posToPursue = playerTransform.position;
             return true;
         }
         return false;
@@ -351,6 +395,26 @@ public class GuardAI : MonoBehaviour
             !IsPlayerDematerialized())
         {
             Debug.Log("Player hard caught!");
+
+            // Set the position to pursue
+            if (currentState == StateType.Alert)
+                posToPursue = playerTransform.position;
+
+            return true;
+        }
+        return false;
+    }
+
+    // Checks if the player is within the arrest range
+    private bool IsArrested()
+    {
+        bool isPlayerOnLeft = playerTransform.position.x - transform.position.x < 0 ? true : false;
+        if (isGoingLeft == isPlayerOnLeft &&
+            Vector2.Distance(playerTransform.position, flashLight.transform.position) <= arrestRadius &&
+            !IsPlayerDematerialized())
+        {
+            Debug.Log("Player arrested! Game Over!");
+
             return true;
         }
         return false;
@@ -421,9 +485,14 @@ public class GuardAI : MonoBehaviour
     {
         if (collision.gameObject.layer == 10)
         {
-            if (isAOIInitialized)
+            if (currentState == StateType.Investigate && isAOIInitialized)
             {
                 UpdateWaypointIndex(pointsToInvestigate);
+            }
+
+            else if (currentState == StateType.Pursue)
+            {
+                ifHitTheEnd = true;
             }
         }
 
@@ -459,13 +528,16 @@ public class GuardAI : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(flashLight.transform.position, hardCatchRadius);
 
+        // Arrest Range
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, arrestRadius);
+
         // Area of Interest, if there is any
         if (currentState == StateType.Investigate || currentState == StateType.Pursue)
         {
             Gizmos.color = new Color(0, 1, 1, 0.4f);    // Cyan
             Gizmos.DrawSphere(areaOfInterest_center, areaOfInterest_radius_i);
         }
-
     }
 
     #endregion
