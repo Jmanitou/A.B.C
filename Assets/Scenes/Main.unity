@@ -6507,6 +6507,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Guard 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3940517797959358340, guid: 33f0708e65c423149bc97e58dbd54995,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3940517797959358342, guid: 33f0708e65c423149bc97e58dbd54995,
         type: 3}
       propertyPath: m_LocalPosition.x
