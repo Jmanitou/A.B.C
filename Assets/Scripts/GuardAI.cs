@@ -123,7 +123,7 @@ public class GuardAI : MonoBehaviour
             currentState = StateType.Alert;
 
         if (IsArrested())
-            GameManager.GameOver();
+            GameManager.currentGameState = GameState.GameOver;
 
         //// Patrol -> Incapacitated: Knocked out
         //if (IsKnockedOut())
@@ -177,7 +177,7 @@ public class GuardAI : MonoBehaviour
         }
 
         if (IsArrested())
-            GameManager.GameOver();
+            GameManager.currentGameState = GameState.GameOver;
 
     }
 
@@ -197,13 +197,13 @@ public class GuardAI : MonoBehaviour
 
         // ==== STATE TRANSITION ====
 
-        if (IsSoftCaught() || IsHardCaught())
-        {
-            currentState = StateType.Pursue;
-        }
+        //if (IsSoftCaught() || IsHardCaught())
+        //{
+        //    currentState = StateType.Pursue;
+        //}
 
         if (IsArrested())
-            GameManager.GameOver();
+            GameManager.currentGameState = GameState.GameOver;
 
     }
 
@@ -225,7 +225,7 @@ public class GuardAI : MonoBehaviour
             currentState = StateType.Alert;
 
         if (IsArrested())
-            GameManager.GameOver();
+            GameManager.currentGameState = GameState.GameOver;
     }
 
     //// Incapacitated State

@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     {
         goalItemsCollected.text = "Goal Items: " + GameStats.NumOfItems + "/5";
         StartCoroutine(StartAlarm());
+
+        isMuseumOnAlert = false;
     }
 
     // Update is called once per frame
@@ -62,7 +64,7 @@ public class UIManager : MonoBehaviour
                 yield return null;
             }
             alarm.color = new Color(0, 0, 0, 0);    // reset the color of the alarm
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
         }
     }
 }
