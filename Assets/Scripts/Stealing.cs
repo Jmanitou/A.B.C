@@ -20,7 +20,7 @@ public class Stealing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject[] temps = GameObject.FindGameObjectsWithTag("GoalItem");
+        GameObject[] temps = GameObject.FindGameObjectsWithTag("Treasure");
         foreach (GameObject temp in temps)
         {
             GameStats.goalItems.Add(temp);
@@ -61,6 +61,10 @@ public class Stealing : MonoBehaviour
                         stealTimer = 0f;                                // Reset the timer
                         playerStealSlider.gameObject.SetActive(false);  // Hide the slider
 
+                        if (GameStats.goalItems[GameStats.closestItemIndex].transform.name == "Magnet")
+                        {
+                            playerTransform.GetComponent<Character>().hasMagnet = true;
+                        }
                         // Remove the item from the list since it has been stolen
                         GameStats.goalItems.RemoveAt(GameStats.closestItemIndex);
                     }
@@ -107,7 +111,7 @@ public class Stealing : MonoBehaviour
         {
             GameStats.NumOfItems++;
             // Disable the child (museum treasure) of a goal item
-            GameStats.goalItems[index].transform.GetChild(0).gameObject.SetActive(false);
+            GameStats.goalItems[index].SetActive(false);
         }
     }
 }

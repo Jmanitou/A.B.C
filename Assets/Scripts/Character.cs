@@ -22,6 +22,8 @@ public class Character : MonoBehaviour
     private new Rigidbody2D rigidbody2D;
     private BoxCollider2D boxCollider2D;
 
+    public bool hasMagnet = false;
+    [SerializeField] GameObject magnetObject;
     public List<Item> inventory;
 
     void Awake()
@@ -58,6 +60,7 @@ public class Character : MonoBehaviour
         transform.position += horizontal * horizontalSpeed * Time.deltaTime;
 
         transform.GetComponent<Animator>().SetFloat("WalkSpeed", Mathf.Abs(horizontalVal));
+        ToggleMagnet();
     }
 
     // Control if character needs to jump
@@ -66,6 +69,15 @@ public class Character : MonoBehaviour
         if (isGrounded() && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)))
         {
             rigidbody2D.velocity = Vector2.up * jumpVelocity;
+        }
+    }
+
+    void ToggleMagnet()
+    {
+        if (Input.GetKeyDown(KeyCode.O) && hasMagnet)
+        {
+            transform.GetComponent<Animator>().SetBool("HoldMagnet", !transform.GetComponent<Animator>().GetBool("HoldMagnet"));
+            magnetObject.SetActive(!magnetObject.activeSelf);
         }
     }
 
@@ -83,7 +95,11 @@ public class Character : MonoBehaviour
 
     #region Helper Methods
     // Flip the character when facing/walking left
-    void FlipCharacter(bool ifFlipped) { GetComponent<SpriteRenderer>().flipX = ifFlipped ? true : false; }
+    void FlipCharacter(bool ifFlipped)
+    {
+        GetComponent<SpriteRenderer>().flipX = ifFlipped ? true : false;
+        magnetObject.GetComponent<SpriteRenderer>().flipX = ifFlipped ? true : false;
+    }
 
     // Check if the character has hit the ground
     bool isGrounded()
