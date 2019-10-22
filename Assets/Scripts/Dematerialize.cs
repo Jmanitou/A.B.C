@@ -11,7 +11,6 @@ public class Dematerialize : MonoBehaviour
     public bool dematerlized;
     public bool runOutOfTime;
     public float dematerlizeTime;
-    public bool pressed;
 
     // Start is called before the first frame update
     void Start()
@@ -19,12 +18,9 @@ public class Dematerialize : MonoBehaviour
         dematerlizeColor.a = 0.5f;
         dematerlizeTime = 3.0f;
         dematerlized = false;
-
         SetIsDematerialized();
-
         runOutOfTime = false;
         playerColor = gameObject.GetComponent<Renderer>().material.color;
-        pressed = false;
         demateralizeSlider.gameObject.SetActive(true);
         demateralizeSlider.maxValue = 3.0f;
         demateralizeSlider.value = dematerlizeTime;
@@ -33,7 +29,6 @@ public class Dematerialize : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        demateralizeSlider.value = dematerlizeTime;
         if (dematerlized)
         {
             dematerlizeTime -= Time.deltaTime;
@@ -57,24 +52,24 @@ public class Dematerialize : MonoBehaviour
         {
             runOutOfTime = false;
         }
-
-        if (Input.GetKey(KeyCode.P) && !runOutOfTime && pressed == false)
+        demateralizeSlider.value = dematerlizeTime;
+        if (Input.GetKey(KeyCode.P) && !runOutOfTime)
         {
-            pressed = true;
             if (!dematerlized)
             {
-                gameObject.GetComponent<Renderer>().material.color = dematerlizeColor;
+                dematerlized = !dematerlized;
+                SetIsDematerialized();
             }
-            else
-            {
-                gameObject.GetComponent<Renderer>().material.color = playerColor;
-            }
-            dematerlized = !dematerlized;
-            SetIsDematerialized();
+            gameObject.GetComponent<Renderer>().material.color = dematerlizeColor;
         }
-        if (!Input.GetKey(KeyCode.P) && pressed == true)
+        else
         {
-            pressed = false;
+            if (dematerlized)
+            {
+                dematerlized = !dematerlized;
+                SetIsDematerialized();
+            }
+            gameObject.GetComponent<Renderer>().material.color = playerColor;
         }
     }
 
