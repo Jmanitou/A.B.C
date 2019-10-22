@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 672920099}
   - component: {fileID: 672920101}
   - component: {fileID: 672920100}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Speech Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 1034493990}
   - component: {fileID: 1034493989}
   - component: {fileID: 1034493988}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Speech Bubble Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 1417923048}
   - component: {fileID: 1417923050}
   - component: {fileID: 1417923049}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Exclamation Mark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 1729082612}
   - component: {fileID: 1729082611}
   - component: {fileID: 1729082610}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Text Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 3940517797959358392}
   - component: {fileID: 1372119063692518177}
   - component: {fileID: 1079433699316575113}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Guard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -552,7 +552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3940517799081048473}
   - component: {fileID: 3940517799081048678}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -629,7 +629,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 7.775795e-21, z: 4.5905e-41, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0

@@ -73,6 +73,9 @@ public class GuardAI : MonoBehaviour
         // Initialize UI
         ControlGuardUI(false, "");
 
+        // Initialize player transform
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
         // Start the Finite State Machine
         StartCoroutine(GuardFSM());
     }
@@ -427,6 +430,13 @@ public class GuardAI : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Guard collides with player");
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+
+        // Ignore collision with other guards
+        if (collision.gameObject.layer == 11)
+        {
+            Debug.Log("Guard collides with another guard");
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
     }
