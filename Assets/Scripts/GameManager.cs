@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GameState
+{
+    InGame,
+    GameOver
+}
+
 public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -17,5 +23,11 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
+    }
+
+    // Display the game over screen, score
+    public static void GameOver()
+    {
+
     }
 }
