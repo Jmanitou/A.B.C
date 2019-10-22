@@ -75,9 +75,9 @@ public class Character : MonoBehaviour
         int treasureNum = GameStats.NumOfItems;
         switch (treasureNum)
         {
-            case 3: horizontalSpeed = slowerSpeed; break;
-            case 4: horizontalSpeed = slowerSpeed; break;
-            case 5: horizontalSpeed = slowestSpeed; break;
+            case 3: horizontalSpeed = slowerSpeed; jumpVelocity = 9.5f;  break;
+            case 4: horizontalSpeed = slowerSpeed; jumpVelocity = 8.0f;  break;
+            case 5: horizontalSpeed = slowestSpeed; jumpVelocity = 7.5f; break;
         }
     }
 
