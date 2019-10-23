@@ -842,7 +842,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c2766d6c279ed4442bb3be46267ec5f1, type: 2}
+  - {fileID: 2100000, guid: abe1caf2cf2c8804baaf184cb07d24e9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6680,6 +6680,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Guard 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940517797959358340, guid: 33f0708e65c423149bc97e58dbd54995,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3940517797959358342, guid: 33f0708e65c423149bc97e58dbd54995,
         type: 3}
@@ -14047,7 +14052,7 @@ PrefabInstance:
     - target: {fileID: 5400970204315797229, guid: 60fdcf124a891f944be040e4b71a3b05,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 33.11
+      value: -0.14
       objectReference: {fileID: 0}
     - target: {fileID: 5400970204315797229, guid: 60fdcf124a891f944be040e4b71a3b05,
         type: 3}
@@ -14576,14 +14581,6 @@ PrefabInstance:
       propertyPath: areaOfInterest_radius_i
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1729082612, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 519420031}
-    - target: {fileID: 1034493990, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 519420031}
     - target: {fileID: 3940517799081048678, guid: 33f0708e65c423149bc97e58dbd54995,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
@@ -14604,6 +14601,14 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1729082612, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 519420031}
+    - target: {fileID: 1034493990, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 519420031}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
 --- !u!1 &1608691972
@@ -17507,7 +17512,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277776022332059661}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.78, y: -3.424, z: -0.015}
+  m_LocalPosition: {x: 34.42, y: -3.424, z: -0.015}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 6108739576120200353}
@@ -17526,6 +17531,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Guard
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940517797959358340, guid: 33f0708e65c423149bc97e58dbd54995,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3940517797959358342, guid: 33f0708e65c423149bc97e58dbd54995,
         type: 3}
@@ -17597,14 +17607,6 @@ PrefabInstance:
       propertyPath: waypoints.Array.data[1]
       value: 
       objectReference: {fileID: 418365249}
-    - target: {fileID: 1729082612, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 519420031}
-    - target: {fileID: 1034493990, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 519420031}
     - target: {fileID: 3940517799081048678, guid: 33f0708e65c423149bc97e58dbd54995,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
@@ -17615,6 +17617,14 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.z
       value: 1.68e-43
       objectReference: {fileID: 0}
+    - target: {fileID: 1729082612, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 519420031}
+    - target: {fileID: 1034493990, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 519420031}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33f0708e65c423149bc97e58dbd54995, type: 3}
 --- !u!1 &4207136001190884863
