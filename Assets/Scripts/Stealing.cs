@@ -11,6 +11,7 @@ public class Stealing : MonoBehaviour
     [SerializeField] private float stealTimer = 0f;
     public Slider playerStealSlider;
     public Text StealHintText;
+    public Animator playerAnimator;
 
     [SerializeField] 
     [Range(0f, 3f)]
@@ -46,8 +47,10 @@ public class Stealing : MonoBehaviour
                 // Hide the hint
                 StealHintText.enabled = true;
 
-                if (Input.GetKey(KeyCode.U))
+                if (Input.GetKey(KeyCode.I))
                 {
+                    playerAnimator.SetBool("IsStealing", true);
+
                     // Show the slider to the player to indicate stealing progress
                     playerStealSlider.gameObject.SetActive(true);
 
@@ -57,6 +60,7 @@ public class Stealing : MonoBehaviour
                     // When the stealing progress reaches 100%
                     if (stealTimer >= timeToSteal)
                     {
+                        playerAnimator.SetBool("IsStealing", false);
                         Steal(GameStats.closestItemIndex);                   // Steal the item
                         stealTimer = 0f;                                // Reset the timer
                         playerStealSlider.gameObject.SetActive(false);  // Hide the slider
@@ -72,6 +76,8 @@ public class Stealing : MonoBehaviour
 
                 else
                 {
+                    playerAnimator.SetBool("IsStealing", false);
+
                     // If not holding stealing key, hide the slider
                     playerStealSlider.gameObject.SetActive(false);
                     stealTimer = 0;
@@ -82,6 +88,8 @@ public class Stealing : MonoBehaviour
             // If the player is not within the range of any objects
             else
             {
+                playerAnimator.SetBool("IsStealing", false);
+
                 playerStealSlider.gameObject.SetActive(false);  // Hide the slider
                 stealTimer = 0;
                 playerStealSlider.value = 0;

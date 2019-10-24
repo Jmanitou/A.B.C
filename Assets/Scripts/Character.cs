@@ -93,6 +93,17 @@ public class Character : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Ignore the collision with goal items
+        if (collision.gameObject.layer == 9 || collision.gameObject.layer == 12)
+        {
+            Debug.Log("Guard collides with goal items");
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+
+    }
+
     #region Helper Methods
     // Flip the character when facing/walking left
     void FlipCharacter(bool ifFlipped)

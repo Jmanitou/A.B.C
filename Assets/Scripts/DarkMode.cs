@@ -53,7 +53,7 @@ public class DarkMode : MonoBehaviour
 
         // Initialize closest treasure to the player
         closestTreasure = GameStats.goalItems.Count > 0 ?
-            GameStats.goalItems[GameStats.closestItemIndex].gameObject.transform.GetChild(0).gameObject : null;
+            GameStats.goalItems[GameStats.closestItemIndex].gameObject : null;
     }
 
     // Update is called once per frame
@@ -62,7 +62,7 @@ public class DarkMode : MonoBehaviour
         if (GameStats.goalItems.Count > 0)
         {
             // Update the reference to the closest treasure
-            closestTreasure = GameStats.goalItems[GameStats.closestItemIndex].gameObject.transform.GetChild(0).gameObject;
+            closestTreasure = GameStats.goalItems[GameStats.closestItemIndex].gameObject;
 
             // Update the treasure's material
             // If light hit a treasure, and the treasure is not shiny

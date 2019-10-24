@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     {
         goalItemsCollected.text = "Goal Items: " + GameStats.NumOfItems + "/5";
         StartCoroutine(StartAlarm());
+        isMuseumOnAlert = false;
     }
 
     // Update is called once per frame

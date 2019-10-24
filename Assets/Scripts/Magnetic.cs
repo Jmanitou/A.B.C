@@ -8,7 +8,6 @@ public class Magnetic : MonoBehaviour
     [Range(1f, 5f)]
     private float forceMagnitude = .5f;
     [SerializeField] GameObject magnet;
-    // Start is called before the first frame update
 
     void FixedUpdate()
     {

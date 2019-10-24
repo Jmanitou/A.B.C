@@ -123,7 +123,7 @@ public class GuardAI : MonoBehaviour
             currentState = StateType.Alert;
 
         if (IsArrested())
-            GameManager.GameOver();
+            GameManager.currentGameState = GameState.GameOver;
 
         //// Patrol -> Incapacitated: Knocked out
         //if (IsKnockedOut())
@@ -177,7 +177,7 @@ public class GuardAI : MonoBehaviour
         }
 
         if (IsArrested())
-            GameManager.GameOver();
+            GameManager.currentGameState = GameState.GameOver;
 
     }
 
@@ -203,7 +203,7 @@ public class GuardAI : MonoBehaviour
         }
 
         if (IsArrested())
-            GameManager.GameOver();
+            GameManager.currentGameState = GameState.GameOver;
 
     }
 
@@ -225,7 +225,7 @@ public class GuardAI : MonoBehaviour
             currentState = StateType.Alert;
 
         if (IsArrested())
-            GameManager.GameOver();
+            GameManager.currentGameState = GameState.GameOver;
     }
 
     //// Incapacitated State
@@ -505,9 +505,16 @@ public class GuardAI : MonoBehaviour
         // Ignore collision with other guards
         if (collision.gameObject.layer == 11)
         {
-            Debug.Log("Guard collides with another guard");
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
+
+        // Ignore the collision with goal items
+        if (collision.gameObject.layer == 9 || collision.gameObject.layer == 12)
+        {
+            Debug.Log("Guard collides with goal items");
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+
     }
 
     // Debug visualization
