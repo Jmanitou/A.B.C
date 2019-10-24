@@ -22,6 +22,9 @@ public class Character : MonoBehaviour
     private new Rigidbody2D rigidbody2D;
     private BoxCollider2D boxCollider2D;
 
+    public GameObject door;
+    public GameObject openDoorHint;
+
     public bool hasMagnet = false;
     [SerializeField] GameObject magnetObject;
     public List<Item> inventory;
@@ -43,6 +46,7 @@ public class Character : MonoBehaviour
     {
         MoveHorizontally();
         Jump();
+        ExitLevel();
     }
 
     // Control character's horizontal movement
@@ -93,16 +97,40 @@ public class Character : MonoBehaviour
         }
     }
 
+    // When the player decides to leave the museum level
+    private void ExitLevel()
+    {
+        // Key to open the door
+        if (Mathf.Abs(transform.position.x - door.GetComponent<Collider2D>().bounds.center.x) < door.GetComponent<Collider2D>().bounds.extents.x)
+        {
+            openDoorHint.SetActive(true);
+
+            if (Input.GetKeyDown(KeyCode.E))
+                GameManager.currentGameState = GameState.ExitingLevel;
+        }
+        else
+        {
+            openDoorHint.SetActive(false);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Ignore the collision with goal items
         if (collision.gameObject.layer == 9 || collision.gameObject.layer == 12)
         {
-            Debug.Log("Guard collides with goal items");
+            Debug.Log("Player collides with goal items");
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
 
+        // Ignore the collision with door
+        if (collision.gameObject.layer == 13)
+        {
+            Debug.Log("Player enters collision with door");
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
     }
+
 
     #region Helper Methods
     // Flip the character when facing/walking left

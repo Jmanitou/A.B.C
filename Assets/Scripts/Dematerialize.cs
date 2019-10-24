@@ -6,11 +6,17 @@ using UnityEngine.UI;
 public class Dematerialize : MonoBehaviour
 {
     public Slider demateralizeSlider;
+    public Image sliderImageFill;
+    private Color sliderImageFillColor;
     public Color dematerlizeColor;
     public Color playerColor;
     public bool dematerlized;
     public bool runOutOfTime;
     public float dematerlizeTime;
+
+    public Light playerPointLight;
+    private float lightIntensity;
+    [SerializeField] [Range(0f, 1f)] float dimVal;
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +30,28 @@ public class Dematerialize : MonoBehaviour
         demateralizeSlider.gameObject.SetActive(true);
         demateralizeSlider.maxValue = 3.0f;
         demateralizeSlider.value = dematerlizeTime;
+        sliderImageFillColor = sliderImageFill.color;
+
+        lightIntensity = playerPointLight.intensity;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Set the transparency of the fill color of the slider
+        sliderImageFillColor.a = demateralizeSlider.value / demateralizeSlider.maxValue;
+        sliderImageFill.color = sliderImageFillColor;
+
+        // Set point light intensity
+        if (dematerlized)
+        {
+            playerPointLight.intensity = lightIntensity * dimVal;
+        }
+        else
+        {
+            playerPointLight.intensity = lightIntensity;
+        }
+
         if (dematerlized)
         {
             dematerlizeTime -= Time.deltaTime;
@@ -41,6 +64,7 @@ public class Dematerialize : MonoBehaviour
                 dematerlizeTime = 3.0f;
             }
         }
+
         if (dematerlizeTime <= 0f)
         {
             runOutOfTime = true;
@@ -53,6 +77,7 @@ public class Dematerialize : MonoBehaviour
             runOutOfTime = false;
         }
         demateralizeSlider.value = dematerlizeTime;
+
         if (Input.GetKey(KeyCode.P) && !runOutOfTime)
         {
             if (!dematerlized)

@@ -197,10 +197,10 @@ public class GuardAI : MonoBehaviour
 
         // ==== STATE TRANSITION ====
 
-        if (IsSoftCaught() || IsHardCaught())
-        {
-            currentState = StateType.Pursue;
-        }
+        //if (IsSoftCaught() || IsHardCaught())
+        //{
+        //    currentState = StateType.Pursue;
+        //}
 
         if (IsArrested())
             GameManager.currentGameState = GameState.GameOver;
@@ -515,6 +515,12 @@ public class GuardAI : MonoBehaviour
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         }
 
+        // Ignore the collision with door
+        if (collision.gameObject.layer == 13)
+        {
+            Debug.Log("Guard collides with door");
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
     }
 
     // Debug visualization

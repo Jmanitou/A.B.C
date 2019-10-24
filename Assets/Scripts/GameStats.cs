@@ -8,6 +8,7 @@ public class GameStats : MonoBehaviour
     public static int NumOfItems;
     [SerializeField]
     private int startNumOfItems = 0;
+    public static int totalNumOfItems = 0;
 
     // Museum
     public static bool isMuseumAlert = false;
@@ -37,6 +38,7 @@ public class GameStats : MonoBehaviour
         NumOfItems = startNumOfItems;
         TimeLimit = timeLimit;
         isDematerialized = false;
+        totalNumOfItems = goalItems.Count;
     }
 
     void Update()

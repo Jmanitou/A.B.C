@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        goalItemsCollected.text = "Goal Items: " + GameStats.NumOfItems + "/5";
+        goalItemsCollected.text = "Goal Items: " + GameStats.NumOfItems + "/" + GameStats.totalNumOfItems;
 
         // Debug the flash
         if (Input.GetKeyDown(KeyCode.Alpha1))

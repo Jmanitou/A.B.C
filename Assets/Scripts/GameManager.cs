@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public enum GameState
 {
     InGame,
+    ExitingLevel,
+    Win,
     GameOver
 }
 
@@ -13,7 +15,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameState currentGameState;
 
+    public GameObject winScene;
     public GameObject gameOverScreen;
+
+    public Animator doorAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +35,46 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
 
-        if (currentGameState == GameState.GameOver)
+        switch (currentGameState)
         {
-            GameOver();
+            case GameState.ExitingLevel:
+                Debug.Log("Exiting Level State!");
+                ExitingLevel();
+                break;
+            case GameState.Win:
+                WinLevel();
+                break;
+            case GameState.GameOver:
+                GameOver();
+                break;
         }
+    }
+
+    // Player exiting the level
+    private void ExitingLevel()
+    {
+        doorAnimator.SetBool("IsDoorOpen", true);
+
+        StartCoroutine(Exiting(1.5f));
+    }
+
+    private IEnumerator Exiting(float timeInSec)
+    {
+        yield return new WaitForSecondsRealtime(timeInSec);
+        if (GameStats.NumOfItems != GameStats.totalNumOfItems)
+        {
+            currentGameState = GameState.GameOver;
+        }
+        else
+        {
+            currentGameState = GameState.Win;
+        }
+    }
+
+    private void WinLevel()
+    {
+        Time.timeScale = 0;
+        winScene.SetActive(true);
     }
 
     // Display the game over screen, score
